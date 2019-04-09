@@ -1,6 +1,45 @@
-1. Java线程的六种状态
-2. synchronized关键字
-3. volatile关键字
+1. Java单例的实现
+2. Java线程的六种状态
+3. synchronized关键字
+4. volatile关键字
+
+#Java单例
+
+* 懒汉模式
+```java
+public class Instance {
+
+    private synchronized volatile Instance mInstance;
+
+    private Instance() {}
+
+    public static Instance getInstance() {
+        if(mInstance == null) {
+            synhronized(Instance.class) {
+                if(mInstance == null) {
+                    mInstance = new Instance();
+                }
+            }
+        }
+        return mInstance;
+    }
+}
+```
+
+* 静态内部类模式
+```java
+public class Instance {
+    private Instance() {}
+
+    private static class Holder {
+        private static final Instance INSTANCE = new Instance();
+    }
+
+    public static Instance getInstance() {
+        return Holder.INSTANCE;
+    }
+}
+```
 
 # Java线程的六种状态
 
