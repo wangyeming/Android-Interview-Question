@@ -16,7 +16,7 @@ onCreate() -> onStart() -> onResume() -> onPause() -> onStop() -> onDestroy()
 
 onResume()和onPause()决定了Activity是否在前台
 onStart()和onStop()决定了Activity是否可见
-onStop()之后，activity重新恢复到前台，onRestart()方法
+onStop()之后，activity重新恢复到前台，会调onRestart()方法
 
 ## 横竖屏切换对Activity生命周期的影响
 

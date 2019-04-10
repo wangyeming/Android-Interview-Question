@@ -29,7 +29,7 @@ Session通常要借助Cookie来实现Session id。
 
 # TCP和UDP的区别
 
-TCP和UDP都是TCP/IP协议层中传输层的代表协议,TCP是传输控制协议(Transmission Control Protocol)，是一种面向连接的、可靠的、基于字节流的运输层通信协议。
+TCP和UDP都是TCP/IP协议层中传输层的代表协议,TCP是传输控制协议(Transmission Control Protocol)，是一种面向连接的、可靠的、基于字节流的传输层通信协议。
 UDP是用户数据报协议(User Data Protocol)
 
 * TCP协议面向连接，是流传输协议，通过连接发送数据，而UDP协议传输不需要连接，是数据报协议
