@@ -16,20 +16,41 @@ SpecMode表示测量模式，SpecSize表示某种测量模式下的规格大小�
 
 SpecMode有三类，分别是UNSPECIFIED,EXACTLY,AT_MOST三种。UNSPECIFIED表示父容器不对View做任何限制，EXACTLY表示父容器已经检测出View的实际精确大小，View最终大小就是SpecSize的大小。AT_MOST则表示父容器制定了可用大小为SpecSize的，子view不能超过这个size。
 
+MeasureSpec是View类的一个静态内部类，MeasureSpec通过将SpecMode和SpecSize打包成一个int值来避免过多的对象内存分配，为了方便操作，其提供了打包和解包的方法，打包方法为makeMeasureSpec，解包方法为getMode和getSize。
+
 对于子View而言，其SpecMode规律是，如果自己的布局参数是固定size，那么不管父容器多少，SpecMode都是EXACTLY。如果是match_parent的话，父布局是什么，子布局就是什么。对于wrap_content而言，无论父布局是EXACTLY，还是AT_MOST，子View都是AT_MOST。
 
-## View的工作流程
+子View LayoutParams\父布局MeasureSpec|EXACTLY|AT_MOST|UNSPECIFIED|
+----------------------------------- |-------|-------|-------|
+dp/px（具体值））|EXACTLY|EXACTLY|EXACTLY|
+match_parent|EXACTLY|AT_MOST|UNSPECIFIED|
+wrap_content|AT_MOST|AT_MOST|UNSPECIFIED|
 
-View的工作流程主要指measure，layout，draw这三大流程。也就是测量，布局，绘制。measure确定View的测量宽高，layout确定View的最终宽/高和四个顶点的位置，而draw则将View绘制到屏幕上。
+## View的绘制流程
+
+View的绘制流程主要指measure，layout，draw这三大流程。也就是测量，布局，绘制。measure确定View的测量宽高，layout确定View的最终宽/高和四个顶点的位置，而draw则将View绘制到屏幕上。
+
+### View绘制流程之Measure
 
 View的measure过程由measure()方法来完成，而ViewGroup除了完成自己的measure过程外，还会挨个遍历调用所有子元素的measure()方法。
-Layout的作用是ViewGroup用来确定子元素的位置。当ViewGroup的位置被确定后，它在onLayout中会遍历所有子元素并调用其layout方法。
 
-View的draw过程遵循一下四步：
-1. 绘制背景 drawBackground(canvas)
-2. 绘制自己 (onDraw)
-3. 绘制children   (dispatchDraw)
-4. 绘制装饰 (onDrawScrollBars)
+* 首先，在ViewGroup中的measureChildren()方法中会遍历测量ViewGroup中所有的View，当View的可见性处于GONE状态时，不对其进行测量。
+* 然后，测量某个指定的View时，根据父容器的MeasureSpec和子View的LayoutParams等信息计算子View的MeasureSpec。
+* 最后，将计算出的MeasureSpec传入View的measure方法。这里ViewGroup没有定义测量的具体过程，因为ViewGroup是一个抽象类，其测量过程的onMeasure方法需要各个子类去实现。不同的ViewGroup子类有不同的布局特性，这导致它们的测量细节各不相同，如果需要自定义测量过程，则子类可以重写这个方法。（setMeasureDimension方法用于设置View的测量宽高，如果View没有重写onMeasure方法，则会默认调用getDefaultSize来获得View的宽高）
+
+### View的绘制流程之Layout
+
+首先，会通过setFrame方法来设定View的四个顶点的位置，即View在父容器中的位置。然后，会执行到onLayout空方法，子类如果是ViewGroup类型，则重写这个方法，实现ViewGroup中所有View控件布局流程(它在onLayout中会遍历所有子元素并调用其layout方法，来确定子元素的位置。)
+
+### View的绘制流程之Draw
+
+View的draw过程遵循以下留步：
+1. 首先绘制View的背景；drawBackground(canvas)
+2. 如果需要的话，保持canvas的图层，为fading做准备；(fading:褪色渐变区)
+3. 然后，绘制View的内容；onDraw(canvas)
+4. 接着，绘制View的子View； dispatchDraw(canvas)
+5. 如果需要的话，绘制View的fading边缘并恢复图层； mOverlay.getOverlayView().dispatchDraw(canvas);
+6. 最后，绘制View的装饰(例如滚动条等等)。  onDrawForeground
 
 ## 如何自定义View
 

@@ -79,7 +79,7 @@ public class Instance {
 
 **corePoolSize**：线程池核心线程数，默认状态下，核心线程会在线程中一直存活。
 **maximumPoolSize**: 线程池能容纳的最大线程数，当活动线程达到该数量后，后续任务就会阻塞。
-**keepAliveTime**: 非核心线程闲置时的超时时长,超过这个时常，非核心线程就会被回收。如果allowCoreThreadTimeOut属性设置为true，keepAliveTime同样会用于核心线程。
+**keepAliveTime**: 非核心线程闲置时的超时时长,超过这个时长，非核心线程就会被回收。如果allowCoreThreadTimeOut属性设置为true，keepAliveTime同样会用于核心线程。
 **workQueue**: 线程池中的阻塞队列
 **threadFactory**: 线程工厂
 

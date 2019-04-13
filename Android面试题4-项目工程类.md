@@ -7,6 +7,8 @@
 
 # 介绍一下Dex文件
 
+DEX 文件是一种专为 Android 设计的字节码格式，经过优化，使用的内存很少。编译工具链（例如 Jack）将 Java 源代码编译为 DEX 字节码，使其可在 Android 平台上运行。
+
 Dalvik VM和ART VM是Google设计的用于Android平台的虚拟机，区别于传统的Java虚拟机直接加载Class字节码文件的方式，Dalvik虚拟机只支持加载dex格式文件，Dex文件是通过对编译生成的.class文件进行翻译、重构、解释、压缩等处理，生成dex文件。也就是说，Dex 文件格式是专为Dalvik设计的一种压缩格式。
 
 aar文件当中的代码是classes格式。

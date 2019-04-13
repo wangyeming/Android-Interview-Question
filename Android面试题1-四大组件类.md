@@ -2,10 +2,11 @@
 1.	Activity生命周期
 2.	Activity横竖屏切换的生命周期
 3.	对话框出现时activity的生命周期
-4.  Activity如何保存状态
-5.  activity 启动模式
-6.  Fragment生命周期
-7.  Service生命周期 
+4.  通知栏下滑时activity的生命周期
+5.  Activity如何保存状态
+6.  activity 启动模式
+7.  Fragment生命周期
+8.  Service生命周期 
 
 # 生命周期类
 ## Activity生命周期
@@ -27,6 +28,10 @@ onStop()之后，activity重新恢复到前台，会调onRestart()方法
 ## 对话框出现时activity的生命周期
 
 没有影响,原理都是windowmanager.addView()来添加的
+
+## 通知栏下滑时activity的生命周期
+
+没有影响
 
 ## Activity保存状态
 
@@ -63,10 +68,14 @@ onAttach() -> onCreate() -> onCreateView() -> onActivityCreated() -> onStart() -
 Service四个手动调用的方法 startService() stopService() bindService() unBindService()
 Service五个内部自动调用的方法 onCreate() onStartCommand() onDestroy() onBind() onUnbind()
 
-startService()手动调用后，是否是第一次调用？如果是，调用onCreate(),再调用onStartConmand(),否则直接调用onStartConmand()
-stopService()手动调用后,调用onDestroy()
-bindService()手动调用后, 是否调用过onCreate()？否的话onCreate()->onBind(),否则判断是否调用过onBind(),没有就调用onBind()
-unbindService()手动调用后, 如果没有调用过onBind()，结束。否则判断是否调用过onStartCommand(),调用过的话直接onUnbind()，没调用过的话onUnbind()->onDestroy()
+![](/img/Service生命周期-startService.png)
+
+![](/img/Service生命周期-stopService.png)
+
+![](/img/Service生命周期-bindService.png)
+
+![](/img/Service生命周期-unbindService.png)
+
 
 startService开启的Service，调用者退出后Service仍然存在； 
 bindService开启的Service，调用者退出后，Service随着调用者销毁。

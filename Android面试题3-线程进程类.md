@@ -1,7 +1,7 @@
 线程进程类问题
 1.	线程和进程的区别
 2.	线程间通信
-3.	handler机制,Looper里面消息队列如何实现
+3.	handler机制, Looper里面消息队列如何实现
 4.	如何保证多线程持有同一变量互相不影响
 5.	进程间通信
 
@@ -35,6 +35,10 @@ Android系统中将通信的消息封装成**Message**对象,并且配备有专�
 
 在Java层的消息队列中，next()方法和enqueueMessage()方法最后都会调用到natvie的pollOnce()和wake()方法，而这两个方法都是通过Linux的epoll模型来实现的。pollOnce() 通过等待被激活，然后从消息队列中获取消息。wake()方法则是激活处于等待状态的消息队列，通知它有消息到达了。
 
+## 主线程的死循环一直运行是不是特别消耗CPU资源呢？
+
+并不是，这里就涉及到Linux pipe/epoll机制，简单说就是在主线程的MessageQueue没有消息时，便阻塞在loop的queue.next()中的nativePollOnce()方法里，此时主线程会释放CPU资源进入休眠状态，直到下个消息到达或者有事务发生，通过往pipe管道写端写入数据来唤醒主线程工作。这里采用的epoll机制，是一种IO多路复用机制，可以同时监控多个描述符，当某个描述符就绪(读或写就绪)，则立刻通知相应程序进行读或写操作，本质是同步I/O，即读写是阻塞的。所以说，主线程大多数时候都是处于休眠状态，并不会消耗大量CPU资源。
+
 # 如何保证多线程持有同一变量互相不影响
 
 在Java中，可以通过ThreadLocal来实现。ThreadLocal来也就是线程局部变量，为每一个使用该变量的线程都提供一个变量值的副本，每一个线程都可以独立地改变自己的副本，而不会和其它线程的副本冲突。从线程的角度看，
@@ -43,9 +47,10 @@ Android系统中将通信的消息封装成**Message**对象,并且配备有专�
 
 # 进程间通信
 
+最简单的方式是基于Bundle进行数据传递。因为四大组件中的三个Activity,Service,Broadcast都可以传递Bundle格式的数据。
 四大组件中，Broadcast和ContentProvider都可以进行进程间通信。
-另外通过AIDL也是常用的可以实现复杂的IPC通信的方法。
-此外，文件共享，Linux的命名管道，共享内容，信号量等方式也可以。
+在Android中，最重要的IPC机制也就是Binder，基于Binder封装的Messanger(信使)和AIDL也是常用的可以实现IPC通信的方法。
+此外，文件共享，Socket, Linux的命名管道，共享内容，信号量等方式也可以。
 
 AIDL是(Android Interface Definition Language)安卓接口定义语言的简称，我们可以利用它定义客户端与服务使用IPC进行通信时的接口，本质上AIDL是用来快速实现Binder的工具。
 
