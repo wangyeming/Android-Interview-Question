@@ -7,6 +7,7 @@
 6.  activity 启动模式
 7.  Fragment生命周期
 8.  Service生命周期 
+9.  bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
 
 # 生命周期类
 ## Activity生命周期
@@ -79,3 +80,16 @@ Service五个内部自动调用的方法 onCreate() onStartCommand() onDestroy()
 
 startService开启的Service，调用者退出后Service仍然存在； 
 bindService开启的Service，调用者退出后，Service随着调用者销毁。
+
+# bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
+
+bundle的内部结构其实是Map，传递的数据可以是基本类型或它们对应的数组，也可以是对象或对象数组。当Bundle传递的是对象或对象数组时，必须实现Serializable 或Parcelable接口。
+
+Intent是Android的一种机制, 借助Android提供的Api，如
+startActivity(Intent intent);
+startService(Intent service);
+sendBroadcast(Intent intent);
+bindService(Intent service, ServiceConnection conn, int flags);
+等方法，我们可以把intent发送给Android，Android收到后会做相应的处理，启动Activity，发送广播给BroadcastReceiver，启动Service或者绑定Service。
+
+Intent还可以附加各种数据类型，其中就包括Bundle：Intent.putExtra(String name, Bundle value),同时Intent内部是持有一个Bundle对象的,mExtras本身就是个Bundle。而Bundle仅仅是一种键值对数据结构，存储字符串键与限定类型值之间映射关系。如Activity状态保存和回复，fragment数据传递等。

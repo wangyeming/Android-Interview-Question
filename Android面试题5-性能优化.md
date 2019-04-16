@@ -1,5 +1,7 @@
 1. ANR的现象，原因和分析解决方案
 2. 内存泄露的原因和分析解决方案
+3. Bitmap占用内存的大小
+4. 如何优化Bitmap的加载？
 
 # ANR的现象，原因和分析解决方案
 
@@ -36,3 +38,46 @@ Android中常见的内存泄露的例子,比如说Activity的context被静态变
 分析内存泄露的方式有以下几种：
 1. Debug版本的应用包可以考虑集成内存泄露检测工具,例如Apache开源的LeakCanary
 2. 导出和分析hprof(Heap Profilling)文件，可以通过adb shell am dumpyheap命令导出，也可以通过Android Studio自带的Android Profile工具中的内存管理工具导出。导出后的hprof文件可以通过Android Studio浏览和分析具体对象的内存占用和引用信息。
+
+
+# Bitmap占用内存的大小
+
+Bitmap占用内存的大小和以下几个因素有关：
+
+* 图片宽高
+
+* 色彩格式(Alpha_8, RGB_565, ARGB_4444, RGBA_8888等)其中RGBA_8888一个像素4个字节
+
+```C++
+int SkColorTypeBytesPerPixel(SkColorType ct) {
+    switch (ct) {
+        case kUnknown_SkColorType:      return 0;
+        case kAlpha_8_SkColorType:      return 1;
+        case kRGB_565_SkColorType:      return 2;
+        case kARGB_4444_SkColorType:    return 2;
+        case kRGBA_8888_SkColorType:    return 4;
+        case kBGRA_8888_SkColorType:    return 4;
+        case kRGB_888x_SkColorType:     return 4;
+        case kRGBA_1010102_SkColorType: return 4;
+        case kRGB_101010x_SkColorType:  return 4;
+        case kGray_8_SkColorType:       return 1;
+        case kRGBA_F16_SkColorType:     return 8;
+        case kRGBA_F32_SkColorType:     return 16;
+    }
+    return 0;
+}
+```
+
+如果是放在/drawable-*目录下的图片，还会进行缩放，缩放的比例是：屏幕密度/资源密度,也就是和
+
+* 屏幕dpi
+
+* 图片所放的资源文件夹的密度
+
+有关
+
+如果是加载的SD的图片文件，或者加载的是网络地址的图片，那么和屏幕密度是无关的
+
+# 如何优化Bitmap的加载
+
+采用BitmapFactory.Option来加载所需尺寸的图片。具体来说，根据BitmapFactory.Option取出的原始宽高信息，根据采样率的规则和View的实际大小，来计算采样率。而解析原始宽高信息的操作，相对于直接加载图片，是轻量级的。

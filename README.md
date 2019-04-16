@@ -10,6 +10,7 @@
 6.  activity 启动模式
 7.  Fragment生命周期
 8.  Service生命周期 
+9.  bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
 
 ## [Android面试题2-View类](Android面试题2-View类.md)
 
@@ -40,6 +41,8 @@
 
 1. ANR的现象，原因和分析解决方案
 2. 内存泄露的原因和分析解决方案
+3. Bitmap占用内存的大小
+4. 如何优化Bitmap的加载？
 
 ## [Android面试题6-Java并发相关](Android面试题6-Java并发相关.md)
 
@@ -76,5 +79,12 @@
 
 ## [Android面试题11-HashMap相关](Android面试题11-HashMap相关.md)
 
-1. HashMap的关键成员变量
-2. Java 1.8 中 HashMap 的不同
+1. 什么时候会使用HashMap？他有什么特点？
+2. HashMap的工作原理
+3. get和put的原理, equals()和hashCode()的都有什么作用？
+4. hash的实现及原因？
+5. 如果HashMap的大小超过了负载因子(load factor)定义的容量，怎么办？
+
+## [Android面试题12-开源库](Android面试题12-开源库.md)
+
+1. React Natvie如何封装Android的方法和自定义View？
