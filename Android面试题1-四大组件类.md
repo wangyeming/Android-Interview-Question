@@ -8,6 +8,7 @@
 7.  Fragment生命周期
 8.  Service生命周期 
 9.  bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
+10. Serializable和Parcelable区别
 
 # 生命周期类
 ## Activity生命周期
@@ -40,25 +41,16 @@ onSaveInstanceState() 和 onRestoreInstanceState()
 
 ## Activity 启动模式
 
-task是一组相互关联的activity的集合，它是存在于framework层的一个概念，控制界面的跳转和返回。这个task存在于一个称为back stack的数据结构中，也就是说，framework是以栈的形式管理用户开启的activity。这个栈的基本行为是，当用户在多个activity之间跳转时，执行压栈操作，当用户按返回键时，执行出栈操作。
+任务栈是一种后进先出的结构。位于栈顶的Activity处于焦点状态,当按下back按钮的时候,栈内的Activity会一个一个的出栈,并且调用其onDestory()方法。如果栈内没有Activity,那么系统就会回收这个栈,每个APP默认只有一个栈,以APP的包名来命名.
 
-Activity有四种启动模式，分别为standard，singleTop，singleTask，singleInstance。
+standard : 标准模式,每次启动Activity都会创建一个新的Activity实例,并且将其压入任务栈栈顶,而不管这个Activity是否已经存在。Activity的启动三回调(onCreate()->onStart()->onResume())都会执行。
 
-**standard** 
+singleTop : 栈顶复用模式.这种模式下,如果新Activity已经位于任务栈的栈顶,那么此Activity不会被重新创建,所以它的启动三回调就不会执行,同时Activity的onNewIntent()方法会被回调.如果Activity已经存在但是不在栈顶,那么作用与standard模式一样.
 
-在这种模式下启动的activity可以被多次实例化，即在同一个Task中可以存在多个activity的实例,每个实例都会处理一个Intent对象。
+singleTask: 栈内复用模式.创建这样的Activity的时候,系统会先确认它所需任务栈已经创建,否则先创建任务栈.然后放入Activity,如果栈中已经有一个Activity实例,那么这个Activity就会被调到栈顶,onNewIntent(),并且singleTask会清理在当前Activity上面的所有Activity.(clear top)
 
-**singleTop**
-
-如果一个以singleTop模式启动的activity的实例已经存在于任务桟的桟顶，那么再启动这个Activity时，不会创建新的实例，而是重用位于栈顶的那个实例，并且会调用该实例的onNewIntent()方法将Intent对象传递到这个实例中.如果以singleTop模式启动的activity的一个实例已经存在与任务桟中，但是不在桟顶，那么它的行为和standard模式相同，也会创建多个实例。
-
-**singleTask**
-
-在任务栈中会判断是否存在相同的activity，如果存在，那么会清除该activity之上的其他activity对象显示，如果不存在，则会创建一个新的activity放入栈顶,并且调用他的onNewIntent()方法。
-
-**singleInstance**
-
-总是在新的任务中开启，并且这个新的任务中有且只有这一个实例，也就是说被该实例启动的其他activity会自动运行于另一个任务中。当再次启动该activity的实例时，会重用已存在的任务和实例。并且会调用这个实例的onNewIntent()方法，将Intent实例传递到该实例中。和singleTask相同，同一时刻在系统中只会存在一个这样的Activity实例。
+singleInstance : 加强版的singleTask模式,这种模式的Activity只能单独位于一个任务栈内,由于栈内复用的特性,后续请求均不会创建新的Activity,除非这个独特的任务栈被系统销毁了
+Activity的堆栈管理以ActivityRecord为单位,所有的ActivityRecord都放在一个List里面.可以认为一个ActivityRecord就是一个Activity栈
 
 ## Fragment生命周期
 
@@ -67,6 +59,7 @@ onAttach() -> onCreate() -> onCreateView() -> onActivityCreated() -> onStart() -
 ## Service生命周期
 
 Service四个手动调用的方法 startService() stopService() bindService() unBindService()
+
 Service五个内部自动调用的方法 onCreate() onStartCommand() onDestroy() onBind() onUnbind()
 
 ![](/img/Service生命周期-startService.png)
@@ -93,3 +86,10 @@ bindService(Intent service, ServiceConnection conn, int flags);
 等方法，我们可以把intent发送给Android，Android收到后会做相应的处理，启动Activity，发送广播给BroadcastReceiver，启动Service或者绑定Service。
 
 Intent还可以附加各种数据类型，其中就包括Bundle：Intent.putExtra(String name, Bundle value),同时Intent内部是持有一个Bundle对象的,mExtras本身就是个Bundle。而Bundle仅仅是一种键值对数据结构，存储字符串键与限定类型值之间映射关系。如Activity状态保存和回复，fragment数据传递等。
+
+# Serializable和Parcelable区别
+
+Serializable是java提供的一个序列化接口，只需要在类中申明一个serialVersionUID的静态常量，就可以自动实现默认的序列化过程。
+使用简单但是相对来说开销比较大。
+
+Parcelable是Android中的序列化方式，使用稍微麻烦但是效率高。

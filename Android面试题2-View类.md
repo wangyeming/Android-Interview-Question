@@ -11,12 +11,10 @@ View类问题
 
 MeasureSpec很大程度上决定了一个View的尺寸规格。在测量过程中，系统会将View的layoutParams根据父容器所施加的规则转换成对应的MeasureSpec。对于DecorView而言，其MeasureSpec由窗口的尺寸和其自身的LayoutParams来共同确定。对于普通View而言，则是由父容器的MeasureSpec和其自身的LayoutParams来共同确定的。
 
-MeasureSpec是一个32位的int值，高2位代表SpecMode，低30位代表SpecSize。
-SpecMode表示测量模式，SpecSize表示某种测量模式下的规格大小。
+MeasureSpec是View类的一个静态内部类，对应着一个32位的int值，高2位代表SpecMode，低30位代表SpecSize。
+SpecMode表示测量模式，SpecSize表示某种测量模式下的规格大小。MeasureSpec通过将SpecMode和SpecSize打包成一个int值来避免过多的对象内存分配，为了方便操作，其提供了打包和解包的方法，打包方法为makeMeasureSpec，解包方法为getMode和getSize。
 
 SpecMode有三类，分别是UNSPECIFIED,EXACTLY,AT_MOST三种。UNSPECIFIED表示父容器不对View做任何限制，EXACTLY表示父容器已经检测出View的实际精确大小，View最终大小就是SpecSize的大小。AT_MOST则表示父容器制定了可用大小为SpecSize的，子view不能超过这个size。
-
-MeasureSpec是View类的一个静态内部类，MeasureSpec通过将SpecMode和SpecSize打包成一个int值来避免过多的对象内存分配，为了方便操作，其提供了打包和解包的方法，打包方法为makeMeasureSpec，解包方法为getMode和getSize。
 
 对于子View而言，其SpecMode规律是，如果自己的布局参数是固定size，那么不管父容器多少，SpecMode都是EXACTLY。如果是match_parent的话，父布局是什么，子布局就是什么。对于wrap_content而言，无论父布局是EXACTLY，还是AT_MOST，子View都是AT_MOST。
 
@@ -44,7 +42,7 @@ View的measure过程由measure()方法来完成，而ViewGroup除了完成自己
 
 ### View的绘制流程之Draw
 
-View的draw过程遵循以下留步：
+View的draw过程遵循以下六步：
 1. 首先绘制View的背景；drawBackground(canvas)
 2. 如果需要的话，保持canvas的图层，为fading做准备；(fading:褪色渐变区)
 3. 然后，绘制View的内容；onDraw(canvas)

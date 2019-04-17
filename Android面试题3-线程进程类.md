@@ -33,7 +33,7 @@ Android系统中将通信的消息封装成**Message**对象,并且配备有专�
 
 当读到消息时，会分发给对应的Handler去做处理。而MessageQueue本身在没有消息的时候，通过阻塞队列的方式，来实现消息的等待。
 
-在Java层的消息队列中，next()方法和enqueueMessage()方法最后都会调用到natvie的pollOnce()和wake()方法，而这两个方法都是通过Linux的epoll模型来实现的。pollOnce() 通过等待被激活，然后从消息队列中获取消息。wake()方法则是激活处于等待状态的消息队列，通知它有消息到达了。
+在Java层的消息队列代码里，next()方法和enqueueMessage()方法最后都会调用到natvie的pollOnce()和wake()方法，而这两个方法都是通过Linux的epoll模型来实现的。pollOnce() 通过等待被激活，然后从消息队列中获取消息。wake()方法则是激活处于等待状态的消息队列，通知它有消息到达了。
 
 ## 主线程的死循环一直运行是不是特别消耗CPU资源呢？
 
