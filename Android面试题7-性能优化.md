@@ -39,6 +39,14 @@ Android中常见的内存泄露的例子,比如说Activity的context被静态变
 1. Debug版本的应用包可以考虑集成内存泄露检测工具,例如Apache开源的LeakCanary
 2. 导出和分析hprof(Heap Profilling)文件，可以通过adb shell am dumpyheap命令导出，也可以通过Android Studio自带的Android Profile工具中的内存管理工具导出。导出后的hprof文件可以通过Android Studio浏览和分析具体对象的内存占用和引用信息。
 
+如何知道对象是否被回收了?
+
+可以通过手动GC + ReferenceQueue + WeakReference
+
+所谓ReferenceQueue，也就是引用队列，创建 Reference 的时候指定了 ReferenceQueue，并且对象的可达性发生了变化时,垃圾回收器将已注册的引用对象添加到ReferenceQueue。
+
+WeakReference 创建时，传入一个 ReferenceQueue 对象。当被 WeakReference 引用的对象的生命周期结束，一旦被 GC 检查到，GC 将会把该对象添加到 ReferenceQueue 中，待 ReferenceQueue 处理。当 GC 过后对象一直不被加入 ReferenceQueue，说明它可能存在内存泄漏。
+
 
 # Bitmap占用内存的大小
 

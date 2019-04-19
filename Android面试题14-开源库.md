@@ -1,0 +1,18 @@
+1. React Natvie如何封装Android的方法和自定义View？
+2. LeakCanary的原理
+
+对于Android的方法，React Natvie提供了NativeModule接口，例如我们可以继承它的默认抽象实现ReactContextBaseJavaModule，通过对方法加上@ReactMethod的注解的形式，给RN提供Java接口。
+
+对于自定义View, React Natvie提供了ViewManager接口，例如我们可以继承它的默认抽象实现SimpleViewManager类，提供实现createViewInstance()方法创建并返回自定义View的实例。此外，我们也可以对方法加上@ReactProp注解并指定name，从而让RN开发的时候可以设置自定义View的属性。
+
+# LeakCanary的原理
+
+LeakCanary是由squar公司开源的著名项目，用于监听和检测Activiy里的相关对象内存泄露
+
+1. 在Application中注册一个ActivityLifecycleCallbacks来监听Activity的销毁
+2. 通过IdleHandler在主线程空闲时进行检测
+3. 检测是通过WeakReference实现的，如果没有被回收会再次调用gc再确认一遍
+4. 确认有泄漏后，dump hprof文件，并开启一个进程IntentService通过HAHA进行分析
+
+HAHA 是一个由 square 开源的 Android 堆分析库，分析 hprof 文件生成Snapshot对象。Snapshot用以查询对象的最短引用链.
+

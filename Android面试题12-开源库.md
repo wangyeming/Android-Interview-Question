@@ -1,5 +1,0 @@
-1. React Natvie如何封装Android的方法和自定义View？
-
-对于Android的方法，React Natvie提供了NativeModule接口，例如我们可以继承它的默认抽象实现ReactContextBaseJavaModule，通过对方法加上@ReactMethod的注解的形式，给RN提供Java接口。
-
-对于自定义View, React Natvie提供了ViewManager接口，例如我们可以继承它的默认抽象实现SimpleViewManager类，提供实现createViewInstance()方法创建并返回自定义View的实例。此外，我们也可以对方法加上@ReactProp注解并指定name，从而让RN开发的时候可以设置自定义View的属性。
