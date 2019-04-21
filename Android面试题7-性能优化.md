@@ -84,7 +84,7 @@ int SkColorTypeBytesPerPixel(SkColorType ct) {
 
 有关
 
-如果是加载的SD的图片文件，或者加载的是网络地址的图片，那么和屏幕密度是无关的
+如果是加载的SD卡的图片文件，或者加载的是网络地址的图片，那么和屏幕密度是无关的
 
 # 如何优化Bitmap的加载
 
