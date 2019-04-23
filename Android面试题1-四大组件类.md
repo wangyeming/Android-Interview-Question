@@ -9,6 +9,8 @@
 8.  Service生命周期 
 9.  bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
 10. Serializable和Parcelable区别
+11. 不同应用可以存在于同一进程吗？
+12. 跨应用启动的Activity，位于哪个栈中？
 
 # 生命周期类
 ## Activity生命周期
@@ -68,7 +70,7 @@ Service五个内部自动调用的方法 onCreate() onStartCommand() onDestroy()
 
 ![](/img/Service生命周期-bindService.png)
 
-![](/img/Service生命周期-unbindService.png)
+![](/img/Service生命周期-unBindService.png)
 
 
 startService开启的Service，调用者退出后Service仍然存在； 
@@ -93,3 +95,10 @@ Serializable是java提供的一个序列化接口，只需要在类中申明一�
 使用简单但是相对来说开销比较大。
 
 Parcelable是Android中的序列化方式，使用稍微麻烦但是效率高。
+
+# 不同应用可以存在于同一进程吗？
+
+可以，AndroidManifest文件里，application标签下指定相同的sharedUserId和process,并且app使用相同的签名证书即可。
+
+# 跨应用启动的Activity，位于哪个栈中？
+被启动的Activity如果启动模式不是singleInstance，那么和启动Activity位于同一栈中。

@@ -1,6 +1,6 @@
 # Android常见面试题汇总
 
-目前总计有60道题
+目前总计有63道题
 
 ## [Android面试题1-四大组件类](Android面试题1-四大组件类.md)
 
@@ -14,6 +14,8 @@
 8.  Service生命周期 
 9.  bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
 10. Serializable和Parcelable区别
+11. 不同应用可以存在于同一进程吗？
+12. 跨应用启动的Activity，位于哪个栈中？
 
 ## [Android面试题2-View类](Android面试题2-View类.md)
 
@@ -41,6 +43,7 @@
 3.	handler机制, Looper里面消息队列如何实现
 4.	如何保证多线程持有同一变量互相不影响
 5.	进程间通信
+6.  以AIDL为例，说明客户端和服务端建立远程通信的步骤
 
 ## [Android面试题6-项目工程类](Android面试题4-项目工程类.md)
 

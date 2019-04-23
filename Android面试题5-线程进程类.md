@@ -4,6 +4,7 @@
 3.	handler机制, Looper里面消息队列如何实现
 4.	如何保证多线程持有同一变量互相不影响
 5.	进程间通信
+6.  以AIDL为例，说明客户端和服务端建立远程通信的步骤。
 
 # 线程和进程的区别
 
@@ -57,3 +58,19 @@ AIDL是(Android Interface Definition Language)安卓接口定义语言的简称�
 Binder是Android系统提供的一种IPC机制。Binder通信采用C/S架构,从进程的角度，客户端和服务端都有用自己独立的进程用户空间，并共享内核空间，跨进程机制便是利用可共享的内存空间来完成底层通信的。
 
 从组件角度，包含Client、Server、ServiceManager以及binder驱动，其中ServiceManager用于管理系统中的各种服务。而客户端和服务端进行通信，可以简单的概括为三步：1.注册服务，服务端注册服务前到ServiceManager中。2. 获取服务，客户端使用某个服务前，先向ServiceManager那里获取到相应的服务。 3. 使用服务，客户端再根据得到的服务信息，建立与服务端所在的服务端进程的通路，从而实现通信。
+
+# 以AIDL为例，说明客户端和服务端建立远程通信的步骤
+
+我们以客户端和远程进程中的服务，通过AIDL来建立IPC通信的步骤为例，说明一下AIDL的用法。
+
+1. 接口中需要用到的对象，需要实现序列化Parcelable接口，并创建aidl文件并申明对象parcelable。接口中用到的interface参数，也需要创建对应的aidl文件。
+2. 定义AIDL回调接口，其中接口用到的对象和回调接口均引入自aidl文件
+3. sync代码，自动生成AIDL接口对应Binder文件，其中Binder文件实现了接口的方法的同时，还实现了几个方法，一个是asBinder，返回当前的Binder对象，一个是onTransact()方法，参数包括int的code值，parcel的data值，parcel的reply值，以及int的flags四个参数，并返回一个boolean值。
+服务端通过code确定客户端请求的是什么方法，接着从data中取出方法所需的参数，然后执行目标方法。当方法执行完成后，就向reply中写入返回值。此外，函数的返回值如果返回false表示返回失败，可以利用它来做权限验证，拒绝不合法进程的请求。
+4. 实现自动生成的Binder文件中的Stub类，作为Binder在服务端的存根。
+5. 申明运行在远程进程的Service，在onBind()方法中返回我们刚才通过Binder文件中的Stub类生成的Binder对象。
+6. 绑定服务的时候，在bindService()方法中的ServiceConnection接口中，对于onServiceConnected方法中的IBinder参数，用Stub.asInterface()方法将IBinder转换成本地进程可以调用的接口，也就是实现Stub到Proxy的转换。
+
+此时我们以及可以实现客户端调用服务端的方法，并收到回调。
+
+7. 为Binder设置上死亡代理，也就是服务端如果意外退出，客户端可以收到Binder连接断裂的消息，可以进行恢复等逻辑处理。方法是通过Binder.linkToDeath()方法，传入DeathRecipient对象。
