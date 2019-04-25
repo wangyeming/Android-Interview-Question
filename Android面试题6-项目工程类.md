@@ -4,6 +4,7 @@
 4. 大体说清一个应用程序安装到手机上时发生了什么？
 5. apk文件的组成
 6. 一个图片在app中调用R.id后是如何找到的
+7. 主工程的R.java文件和模块的R.java文件区别在哪？
 
 # 介绍一下Dex文件
 
@@ -70,3 +71,9 @@ AAPT在每一次编译的时候不会去保存上一次生成的资源ID标示�
 
 在调试的时候，你可以使用“ aapt dump resources <apk的路径>”来看到对resources.arsc文件的详细描述信息。
 
+# 主工程的R.java文件和模块的R.java文件区别在哪？
+
+主项目中生成的 R.java 中的资源声明是一个静态常量(final)，而在 module 中它却是一个静态变量(没有final)。
+
+主项目与 module 中有同样资源时，module 却会使用主项目的资源。
+在 module 中无法针对资源使用 switch-case 方式的原因。

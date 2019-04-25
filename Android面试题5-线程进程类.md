@@ -63,7 +63,7 @@ Binder是Android系统提供的一种IPC机制。Binder通信采用C/S架构,从
 
 我们以客户端和远程进程中的服务，通过AIDL来建立IPC通信的步骤为例，说明一下AIDL的用法。
 
-1. 接口中需要用到的对象，需要实现序列化Parcelable接口，并创建aidl文件并申明对象parcelable。接口中用到的interface参数，也需要创建对应的aidl文件。
+1. 接口中需要用到的对象，需要实现序列化Parcelable接口，并创建aidl文件并申明对象parcelable。接口中用到的回调interface参数，也需要创建对应的aidl文件。
 2. 定义AIDL回调接口，其中接口用到的对象和回调接口均引入自aidl文件
 3. sync代码，自动生成AIDL接口对应Binder文件，其中Binder文件实现了接口的方法的同时，还实现了几个方法，一个是asBinder，返回当前的Binder对象，一个是onTransact()方法，参数包括int的code值，parcel的data值，parcel的reply值，以及int的flags四个参数，并返回一个boolean值。
 服务端通过code确定客户端请求的是什么方法，接着从data中取出方法所需的参数，然后执行目标方法。当方法执行完成后，就向reply中写入返回值。此外，函数的返回值如果返回false表示返回失败，可以利用它来做权限验证，拒绝不合法进程的请求。

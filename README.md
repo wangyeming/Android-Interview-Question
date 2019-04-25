@@ -1,6 +1,6 @@
 # Android常见面试题汇总
 
-目前总计有63道题
+目前总计有66道题
 
 ## [Android面试题1-四大组件类](Android面试题1-四大组件类.md)
 
@@ -68,6 +68,10 @@
 3. synchronized关键字
 4. volatile关键字
 5. 线程池的理解
+6. Java的等待/通知模型
+7. Copy-On-Write容器
+8. 重入锁以及锁的公平性
+
 
 ## [Android面试题9-JVM相关](Android面试题9-JVM相关.md)
 
