@@ -11,6 +11,7 @@
 10. Serializable和Parcelable区别
 11. 不同应用可以存在于同一进程吗？
 12. 跨应用启动的Activity，位于哪个栈中？
+13. LocalBroadcast原理
 
 # 生命周期类
 ## Activity生命周期
@@ -102,3 +103,8 @@ Parcelable是Android中的序列化方式，使用稍微麻烦但是效率高。
 
 # 跨应用启动的Activity，位于哪个栈中？
 被启动的Activity如果启动模式不是singleInstance，那么和启动Activity位于同一栈中。
+
+# LocalBroadcast原理
+
+BroadcastReceiver采用的binder方式实现跨进程间的通信；
+LocalBroadcastManager使用Handler通信机制。

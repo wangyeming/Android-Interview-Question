@@ -1,6 +1,6 @@
 # Android常见面试题汇总
 
-目前总计有66道题
+目前总计有67道题
 
 ## [Android面试题1-四大组件类](Android面试题1-四大组件类.md)
 
@@ -16,6 +16,7 @@
 10. Serializable和Parcelable区别
 11. 不同应用可以存在于同一进程吗？
 12. 跨应用启动的Activity，位于哪个栈中？
+13. LocalBroadcast原理
 
 ## [Android面试题2-View类](Android面试题2-View类.md)
 
