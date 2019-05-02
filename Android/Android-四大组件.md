@@ -1,20 +1,24 @@
-四大组件类问题
-1.	Activity生命周期
-2.	Activity横竖屏切换的生命周期
-3.	对话框出现时activity的生命周期
-4.  通知栏下滑时activity的生命周期
-5.  Activity如何保存状态
-6.  activity 启动模式
-7.  Fragment生命周期
-8.  Service生命周期 
-9.  bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
-10. Serializable和Parcelable区别
-11. 不同应用可以存在于同一进程吗？
-12. 跨应用启动的Activity，位于哪个栈中？
-13. LocalBroadcast原理
+# Android基础题-四大组件
 
-# 生命周期类
-## Activity生命周期
+包含Android四大组件Activity，Service，Broadcast，ContentProvider，以及Fragment的常见问题，还包括Android中一些基础的数据结构和接口，如Bundle，序列化等。
+
+## 目录
+
+1.	Activity和Fragment的生命周期
+2.	Activity横竖屏切换的生命周期
+3.	对话框出现时Activity的生命周期
+4.  通知栏下滑时Activity的生命周期
+5.  Activity如何保存状态
+6.  Activity的启动模式
+7.  跨应用启动的Activity，位于哪个栈中？
+8.  Service生命周期 
+9.  IntentService的作用
+10. LocalBroadcast原理
+11. bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
+12. Serializable和Parcelable区别
+13. 不同应用可以存在于同一进程吗？
+
+## Activity和Fragment的生命周期
 
 从Activity启动到最终Activity被销毁，总共经历生命周期：
 
@@ -24,15 +28,25 @@ onResume()和onPause()决定了Activity是否在前台
 onStart()和onStop()决定了Activity是否可见
 onStop()之后，activity重新恢复到前台，会调onRestart()方法
 
+从Fragment创建到最终Fragment被销毁
+
+onAttach() -> onCreate() -> onCreateView() -> onActivityCreated() -> onStart() -> onResume() -> onPause() -> onStop() -> onDestroyView() -> onDestroy() -> onDetach()
+
+更具体的，可以参考下图：
+
+![](../img/complete_android_fragment_lifecycle.svg)
+
 ## 横竖屏切换对Activity生命周期的影响
 
-不设置Activity的android:configChanges，或设置Activity的android:configChanges="orientation"，或设置Activity的android:configChanges="orientation|keyboardHidden"，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行一次。
+Activity的android:configChanges属性设置的值表示，当Activity的这些属性值发生时，Activity自行处理。
 
-配置 android:configChanges="orientation|keyboardHidden|screenSize"，才不会销毁 activity，且只调用 onConfigurationChanged方法。
+配置 android:configChanges="orientation|keyboardHidden|screenSize"，不会销毁 activity，且只调用 onConfigurationChanged方法。
+
+其它情况下，包括不设置Activity的android:configChanges属性，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行一次。
 
 ## 对话框出现时activity的生命周期
 
-没有影响,原理都是windowmanager.addView()来添加的
+没有影响, View本身是通过WindowManager.addView()来添加的。
 
 ## 通知栏下滑时activity的生命周期
 
@@ -55,9 +69,8 @@ singleTask: 栈内复用模式.创建这样的Activity的时候,系统会先确�
 singleInstance : 加强版的singleTask模式,这种模式的Activity只能单独位于一个任务栈内,由于栈内复用的特性,后续请求均不会创建新的Activity,除非这个独特的任务栈被系统销毁了
 Activity的堆栈管理以ActivityRecord为单位,所有的ActivityRecord都放在一个List里面.可以认为一个ActivityRecord就是一个Activity栈
 
-## Fragment生命周期
-
-onAttach() -> onCreate() -> onCreateView() -> onActivityCreated() -> onStart() -> onResume() -> onPause() -> onStop() -> onDestroyView() -> onDestroy() -> onDetach()
+# 跨应用启动的Activity，位于哪个栈中？
+被启动的Activity如果启动模式不是singleInstance，那么和启动Activity位于同一栈中。
 
 ## Service生命周期
 
@@ -73,9 +86,17 @@ Service五个内部自动调用的方法 onCreate() onStartCommand() onDestroy()
 
 ![](/img/Service生命周期-unBindService.png)
 
-
 startService开启的Service，调用者退出后Service仍然存在； 
 bindService开启的Service，调用者退出后，Service随着调用者销毁。
+
+# IntentService的作用
+
+IntentService继承自Service类，内部包含了一个工作线程用于处理异步任务，通过Context.startService(Intent)传递Intent任务，任务执行完成后会自动关闭自己。
+
+# LocalBroadcast原理
+
+BroadcastReceiver采用的binder方式实现跨进程间的通信；
+LocalBroadcastManager使用Handler通信机制，保证了只在当前进程生效。
 
 # bundle的数据结构，如何存储，既然有了Intent.putExtra，为什么还要用bundle？
 
@@ -100,11 +121,3 @@ Parcelable是Android中的序列化方式，使用稍微麻烦但是效率高。
 # 不同应用可以存在于同一进程吗？
 
 可以，AndroidManifest文件里，application标签下指定相同的sharedUserId和process,并且app使用相同的签名证书即可。
-
-# 跨应用启动的Activity，位于哪个栈中？
-被启动的Activity如果启动模式不是singleInstance，那么和启动Activity位于同一栈中。
-
-# LocalBroadcast原理
-
-BroadcastReceiver采用的binder方式实现跨进程间的通信；
-LocalBroadcastManager使用Handler通信机制。

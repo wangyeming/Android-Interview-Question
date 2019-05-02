@@ -1,10 +1,12 @@
-1. 什么时候会使用HashMap？他有什么特点？
+# HashMap相关
+
+1. 什么时候会使用HashMap？它有什么特点？
 2. HashMap的工作原理
 3. get和put的原理, equals()和hashCode()的都有什么作用？
 4. hash的实现及原因？
 5. 如果HashMap的大小超过了负载因子(load factor)定义的容量，怎么办？
 
-#  什么时候会使用HashMap？他有什么特点？
+#  什么时候会使用HashMap？它有什么特点？
 
 HashMap是基于实现Map接口的散列表，这个实现提供了所有可选的map操作，并且允许null的键值对。它是非同步的，不保证有序，也不保证顺序不随事件变化。(HashTable是同步的，并且不接受null的键值对)。
 

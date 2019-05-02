@@ -1,3 +1,7 @@
+# Android基础题-项目工程
+
+## 目录
+
 1. 介绍一下Dex文件
 2. SDK如何优化体积
 3. 从点击桌面应用图标，到最终启动App，中间发生了什么事？
@@ -6,7 +10,7 @@
 6. 一个图片在app中调用R.id后是如何找到的
 7. 主工程的R.java文件和模块的R.java文件区别在哪？
 
-# 介绍一下Dex文件
+## 介绍一下Dex文件
 
 DEX 文件是一种专为 Android 设计的字节码格式，经过优化，使用的内存很少。编译工具链（例如 Jack）将 Java 源代码编译为 DEX 字节码，使其可在 Android 平台上运行。
 
@@ -14,11 +18,11 @@ Dalvik VM和ART VM是Google设计的用于Android平台的虚拟机，区别于�
 
 aar文件当中的代码是classes格式。
 
-# SDK如何优化体积
+## SDK如何优化体积
 
 基础库，如网络，图片加载等，可以考虑封装通用的接口供外部实现，SDK只采用provide的形式。
 
-# 从点击桌面应用图标，到最终启动App，中间发生了什么事？
+## 从点击桌面应用图标，到最终启动App，中间发生了什么事？
 
 『六个角色，四个进程，五个步骤』
 
@@ -46,7 +50,7 @@ Zygote进程，该进程主要用来fork新进程。
 4、在新进程里创建ActivityThread对象，新创建的进程就是应用的主线程，在主线程里开启Looper消息循环，开始处理创建Activity。
 5、ActivityThread利用ClassLoader去加载Activity、创建Activity实例，并回调Activity的onCreate()方法，这样便完成了Activity的启动。
 
-# 大体说清一个应用程序安装到手机上时发生了什么？
+## 大体说清一个应用程序安装到手机上时发生了什么？
 
 1. 复制APK到/data/app目录下，解压并扫描安装包。
 2. 资源管理器解析APK里的资源文件, 解析AndroidManifest文件，并在/data/data/目录下创建对应的应用数据目录。
@@ -54,7 +58,7 @@ Zygote进程，该进程主要用来fork新进程。
 4. 将AndroidManifest文件解析出的四大组件信息注册到PackageManagerService中。
 5. 安装完成后，发送广播。
 
-# apk文件的组成
+## apk文件的组成
 
 dex：最终生成的Dalvik字节码。
 res：存放资源文件的目录。
@@ -62,7 +66,7 @@ asserts：额外建立的资源文件夹。
 lib：如果存在的话，存放的是ndk编出来的so库。
 META-INF：存放签名信息
 
-# 一个图片在app中调用R.id后是如何找到的
+## 一个图片在app中调用R.id后是如何找到的
 
 在编译的时候，AAPT会扫描你所定义的所有资源,然后给它们指定不同的资源ID。资源ID 是一个32bit的数字，格式是PPTTNNNN ， PP代表资源所属的包(package) ,TT代表资源的类型(type)，NNNN代表这个类型下面的资源的名称。 对于应用程序的资源来说，PP的取值是0×7f。
 
@@ -71,7 +75,7 @@ AAPT在每一次编译的时候不会去保存上一次生成的资源ID标示�
 
 在调试的时候，你可以使用“ aapt dump resources <apk的路径>”来看到对resources.arsc文件的详细描述信息。
 
-# 主工程的R.java文件和模块的R.java文件区别在哪？
+## 主工程的R.java文件和模块的R.java文件区别在哪？
 
 主项目中生成的 R.java 中的资源声明是一个静态常量(final)，而在 module 中它却是一个静态变量(没有final)。
 

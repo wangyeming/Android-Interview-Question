@@ -1,3 +1,7 @@
+# Java语言-Java基础问题
+
+## 目录
+
 1. Java中的强引用，软引用，弱引用，虚引用
 2. Java中对象的生命周期
 3. Java的注解
@@ -21,7 +25,7 @@
 虚可达（Phantom reachable）
 不可达（Unreachable）
 
-# Java中对象的生命周期
+* Java中对象的生命周期
 
 在Java中，对象的生命周期包括以下几个阶段：
 

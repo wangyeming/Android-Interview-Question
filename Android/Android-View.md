@@ -1,11 +1,12 @@
-View类问题
+# Android基础题-View
+
+## 目录
+
 1. MeasureSpec的理解
 2. View的工作流程
 3. 如何自定义View
 4. View事件分发机制
 5. View的滑动冲突处理
-
-# View的绘制流程
 
 ## MeasureSpec的理解
 
@@ -56,8 +57,6 @@ View的draw过程遵循以下六步：
 2. 继承ViewGroup派生特殊的布局
 3. 继承特定的View，比如TextView
 4. 继承特定的ViewGroup
-
-# View事件分发
 
 ## View事件分发机制
 

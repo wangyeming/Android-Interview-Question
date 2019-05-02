@@ -1,3 +1,7 @@
+# Java并发相关
+
+## 目录
+
 1. Java单例的实现
 2. Java线程的六种状态
 3. synchronized关键字
@@ -7,7 +11,7 @@
 7. Copy-On-Write容器
 8. 重入锁以及锁的公平性
 
-# Java单例
+* Java单例
 
 * 懒汉模式
 ```java
@@ -45,7 +49,7 @@ public class Instance {
 }
 ```
 
-# Java线程的六种状态
+* Java线程的六种状态
 
 分别是 NEW RUNNABLE BLOCKED WAITING TIMED_WAITING TERMINATED
 
@@ -56,7 +60,7 @@ public class Instance {
 * 超时等待(TIMED_WAITING)：该状态不同于WAITING，它可以在指定的时间后自行返回。
 * 终止(TERMINATED)：表示该线程已经执行完毕。
 
-# synchronized关键字
+* synchronized关键字
 
 * synchronized提供了锁机制中的可见性和互斥性。Java中每一个对象都可以作为锁。利用synchronized加锁，有三种表现形式。
 * 对于普通同步方法，锁是当前实例对象。
@@ -64,7 +68,7 @@ public class Instance {
 * 对于同步方法块，锁是synchronized括号里面配置的对象。
 * synchronized关键字提供了隐式获取释放锁的便捷性，但是也缺少一些灵活性。java中的Lock接口及相关实现类可以更灵活的操作锁的获取和释放。
 
-# volatile关键字
+* volatile关键字
 
 * volatile关键字是轻量级synchronized，在多线程并发编程中保证了共享变量的可见性。可见性就是指当一个线程修改一个共享变量，
 另外一个线程能够读到这个修改的值。恰当使用可以比synchronized的使用和执行成本更低，因为他不会引起线程上下文的切换和调度。
@@ -76,7 +80,7 @@ public class Instance {
 * 重排序指的是编译器和处理器为了优化程序性能而对指令序列进行重新排序的一种手段。java内存模型(JMM)会涉及volatile变量的重排序的时候，
 采取了一些策略，来保证volatile变量的这种特性。
 
-# 线程池的理解
+* 线程池的理解
 
 线程池的构造器ThreadPoolExecutor有以下几个重要参数：
 
@@ -98,7 +102,7 @@ AysncTask的线程池配置：
 3. 核心线程无超时机制，非核心线程闲置超时时长为1s
 4. 任务队列的容量是128
 
-# Java的等待/通知模型
+* Java的等待/通知模型
 
 Java的等待通知机制，是指一个线程A调用了对象O的wait方法进入等待状态,而另一个线程B调用了对象O的notify()或notifyAll()方法,线程A收到通知后从对象O的wait()方法返回，进而执行后续操作。
 
@@ -118,7 +122,7 @@ Java的等待通知机制，是指一个线程A调用了对象O的wait方法进�
 3. 通知线程调用了notify()方法，将等待线程从等待队列WaitQueue移到了同步队列SynchronizedQueue中，此时等待队列WaitQueue变为阻塞阶段。
 4. 通知线程释放锁之后，等待线程再次获取到锁对象，并从wait()方法中返回
 
-# Copy-On-Write容器
+* Copy-On-Write容器
 
 CopyOnWrite容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。这样做的好处是我们可以对CopyOnWrite容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素。所以CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器。
 
@@ -127,7 +131,7 @@ CopyOnWrite容器即写时复制的容器。通俗的理解是当我们往一个
 内存占用问题。因为CopyOnWrite的写时复制机制，所以在进行写操作的时候，内存里会同时驻扎两个对象的内存
 数据一致性问题。CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用CopyOnWrite容器。
 
-# 重入锁以及锁的公平性
+* 重入锁以及锁的公平性
 
 重入锁，也就是支持重进入的锁，表示该锁支持一个线程对资源的重复加锁，java中的重入锁是ReentrantLock。锁的重进入指任意线程获取到锁之后能够再次获取到锁而不会被阻塞，所以需要实现两个特性：
 1. 线程再次获取锁，锁需要识别获取锁的线程是否为当前占据锁的线程。如果是，则获取成功。
