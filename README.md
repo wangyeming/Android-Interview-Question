@@ -112,6 +112,7 @@
 3. Bitmap占用内存的大小
 4. 如何优化Bitmap的加载？
 5. 如何定位和优化滑动卡顿？
+6. 如何评估和测量App的性能？
 
 * [Android中的开源库](/Android/Android-开源库.md)
 
