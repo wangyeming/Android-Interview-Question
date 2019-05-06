@@ -84,12 +84,11 @@
 
 * [Android基础题-线程进程类](/Android/Android-线程与进程.md)
 
-1.	线程和进程的区别
-2.	Android中线程间通信
-3.	handler机制, Looper里面消息队列如何实现
-4.	在Java中，如何保证多线程持有同一变量互相不影响
-5.	Android中进程间通信
-6.  以AIDL为例，说明客户端和服务端建立远程通信的步骤。
+1.	Android中线程间通信
+2.	handler机制, Looper里面消息队列如何实现
+3.	在Java中，如何保证多线程持有同一变量互相不影响
+4.	Android中进程间通信
+5.  以AIDL为例，说明客户端和服务端建立远程通信的步骤。
 
 * [Android基础题--WebView](/Android/Android-WebView.md)
 
@@ -159,11 +158,16 @@
 1. GET和POST的区别
 2. Cookie和Session的区别
 3. Http和Https的区别
-4. TCP和UDP的区别
-5. TCP建立连接和断开连接的过程
-6. TCP/IP协议的含义和分层
-7. 浏览器输入URL后发生了什么
+4. Https的混合加密机制的原理
+5. TCP和UDP的区别
+6. TCP建立连接和断开连接的过程
+7. TCP/IP协议的含义和分层
+8. 浏览器输入URL后发生了什么
 
+* [操作系统知识](/common-basic/操作系统知识.md)
+
+1. 如何理解I/O多路复用
+2. 线程和进程的区别
 
 
 
