@@ -90,6 +90,6 @@ Java中内置了三种标准注解以及四种元注解。
 * RUNTIME VM将在运行期也保留注解，因此可通过反射机制读取注解的信息
 
 @Ducumented 将该注解包含在Javadoc中
-@Inherited 允许之类继承父类成员的注解
+@Inherited 允许子类继承父类成员的注解
 
 注解通常需要有对应的注解处理器，通过反射接口的getAnnotation()可以拿到注解实例
