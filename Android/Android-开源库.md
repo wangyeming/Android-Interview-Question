@@ -26,7 +26,7 @@ LeakCanary是由square公司开源的内存泄露检测分析工具，可以用�
 
 基于的原理是创建对象的弱引用时，指定引用队列。当对象的可达性发生变化时，系统GC会讲对象插入到应用队列中。
 
-而第二个问题，LeakCanary借住的是haha这个库，同样是由square开源的 Android 堆分析库，分析hprof文件生成Snapshot对象，用以查询对象的最短引用路径。
+而第二个问题，LeakCanary借助的是haha这个库，同样是由square开源的 Android 堆分析库，分析hprof文件生成Snapshot对象，用以查询对象的最短引用路径。
 
 我们以debug模式下，LeakCanary自动检测Activity对象为例，具体过程：
 
